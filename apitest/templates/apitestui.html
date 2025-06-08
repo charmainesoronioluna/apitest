@@ -56,7 +56,7 @@
                 </div>
             </div>
 
-            <div class="container">
+            <div class="container mt-5">
                 <!-- Form Section Heading-->
                 <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">User List</h2>
                 <!-- Icon Divider-->
@@ -65,7 +65,80 @@
                     <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
                     <div class="divider-custom-line"></div>
                 </div>
-                
+
+                <table id="userTable" border="1" style="border-collapse: collapse; width: 80%; margin: 20px auto;">
+                <thead>
+                    <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody">
+                    <!-- Rows will be inserted here -->
+                </tbody>
+                </table>
+
+                <script>
+                    async function loadUsers() {
+                        const res = await fetch('/api/users');
+                        const users = await res.json();
+                        const tbody = document.getElementById('userTableBody');
+                        tbody.innerHTML = '';  // Clear existing rows
+
+                        if (users.length === 0) {
+                            tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;">No users added yet.</td></tr>`;
+                            return;
+                        }
+
+                        users.forEach(user => {
+                            const row = document.createElement('tr');
+
+                            row.innerHTML = `
+                                <td>${user.name}</td>
+                                <td>${user.email}</td>
+                                <td>
+                                    <button onclick="editUser('${user.id}')">Edit</button>
+                                    <button onclick="deleteUser('${user.id}')">Delete</button>
+                                </td>
+                            `;
+
+                            tbody.appendChild(row);
+                        });
+                    }
+
+                    async function addUser() {
+                        const name = document.getElementById('name').value;
+                        const email = document.getElementById('email').value;
+                        await fetch('/api/users', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({name, email})
+                        });
+                        loadUsers();
+                    }
+
+                    async function deleteUser(id) {
+                        await fetch(`/api/users/${id}`, {method: 'DELETE'});
+                        loadUsers();
+                    }
+
+                    async function editUser(id) {
+                        const name = prompt("Enter new name:");
+                        const email = prompt("Enter new email:");
+                        if (name && email) {
+                            await fetch(`/api/users/${id}`, {
+                                method: 'PUT',
+                                headers: {'Content-Type': 'application/json'},
+                                body: JSON.stringify({name, email})
+                            });
+                            loadUsers();
+                        }
+                    }
+
+                    loadUsers();
+                </script>
+
                 <ul id="userList"></ul>
 
                 <script>
