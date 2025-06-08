@@ -100,8 +100,8 @@
                                 <td>${user.name}</td>
                                 <td>${user.email}</td>
                                 <td>
-                                    <button onclick="editUser('${user.id}')">Edit</button>
-                                    <button onclick="deleteUser('${user.id}')">Delete</button>
+                                    <button class="btn btn-primary btn-xl me-1" id="editButton" type="button" onclick="editUser('${user.id}')">Edit</button>
+                                    <button class="btn btn-primary btn-xl me-1" id="deleteButton" type="button" onclick="deleteUser('${user.id}')">Delete</button>
                                 </td>
                             `;
 
