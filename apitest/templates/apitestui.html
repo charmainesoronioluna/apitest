@@ -131,20 +131,7 @@
                         await fetch(`/api/users/${id}`, {method: 'DELETE'});
                         loadUsers();
                     }
-
-                    async function editUser(id) {
-                        const name = prompt("Enter new name:");
-                        const email = prompt("Enter new email:");
-                        if (name && email) {
-                            await fetch(`/api/users/${id}`, {
-                                method: 'PUT',
-                                headers: {'Content-Type': 'application/json'},
-                                body: JSON.stringify({name, email})
-                            });
-                            loadUsers();
-                        }
-                    }
-
+                    
                     function enableEdit(id) {
                     document.getElementById(`name-${id}`).disabled = false;
                     document.getElementById(`email-${id}`).disabled = false;
