@@ -66,18 +66,20 @@
                     <div class="divider-custom-line"></div>
                 </div>
 
-                <table id="userTable" border="1" style="border-collapse: collapse; width: 80%; margin: 20px auto;">
-                    <thead>
+                <div class="table-responsive">
+                    <table id="userTable" class="table table-striped table-hover table-bordered">
+                        <thead class="table-light">
                         <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Actions</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th style="width: 150px;">Actions</th>
                         </tr>
-                    </thead>
-                    <tbody id="userTableBody">
-                        <!-- Rows will be inserted here -->
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody id="userTableBody">
+                        <!-- Rows will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
 
                 <script>
                     async function loadUsers() {
