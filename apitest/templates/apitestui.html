@@ -97,14 +97,17 @@
                             const row = document.createElement('tr');
 
                             row.innerHTML = `
-                                <td>${user.name}</td>
-                                <td>${user.email}</td>
+                                <td><input type="text" class="form-control form-control-sm" value="${user.name}" id="name-${user.id}" disabled></td>
+                                <td><input type="email" class="form-control form-control-sm" value="${user.email}" id="email-${user.id}" disabled></td>
                                 <td>
-                                    <button class="btn btn-sm btn-outline-primary" onclick="editUser('${user.id}')" title="Edit">
-                                        <i class="fas fa-pencil-alt"></i>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="enableEdit('${user.id}')" title="Edit">
+                                    <i class="fas fa-pencil-alt"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-success d-none" onclick="saveUser('${user.id}')" id="save-${user.id}" title="Save">
+                                    <i class="fas fa-check"></i>
                                     </button>
                                     <button class="btn btn-sm btn-outline-danger" onclick="deleteUser('${user.id}')" title="Delete">
-                                        <i class="fas fa-trash-alt"></i>
+                                    <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </td>
                             `;
@@ -142,7 +145,24 @@
                         }
                     }
 
-                    loadUsers();
+                    function enableEdit(id) {
+                    document.getElementById(`name-${id}`).disabled = false;
+                    document.getElementById(`email-${id}`).disabled = false;
+                    document.getElementById(`save-${id}`).classList.remove('d-none');
+                    }
+
+                    async function saveUser(id) {
+                    const name = document.getElementById(`name-${id}`).value;
+                    const email = document.getElementById(`email-${id}`).value;
+
+                    await fetch(`/api/users/${id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name, email })
+                    });
+
+                    loadUsers(); // reload table after save
+                    }
                 </script>
             </div>
         </section>
