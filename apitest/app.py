@@ -38,12 +38,13 @@ def user_detail(user_id):
 
 @app.route('/api/users/<user_id>', methods=['PATCH'])
 def patch_user(user_id):
-    if user_id not in users:
+    user = next((u for u in data if u['id'] == user_id), None)
+    if not user:
         return jsonify({'error': 'User not found'}), 404
 
-    data = request.get_json()
-    if not data:
+    patch_data = request.get_json()
+    if not patch_data:
         return jsonify({"error": "Invalid input"}), 400
 
-    users[user_id].update(data)
-    return jsonify({"message": "User updated", "user": users[user_id]}), 200
+    user.update(patch_data)
+    return jsonify({"message": "User partially updated", "user": user}), 200
