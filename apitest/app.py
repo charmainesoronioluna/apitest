@@ -36,3 +36,17 @@ def user_detail(user_id):
         data = [u for u in data if u['id'] != user_id]
         return jsonify({"message": "User deleted"})
 
+@app.route('api/users/<user_id>', methods=['PATCH'])
+def patch_user(user_id):
+    if user_id not in users:
+        return jsonify({'error': 'User not found'}), 404
+
+    data = request.get_json()
+
+    # Only update fields that are allowed
+    if 'name' in data:
+        users[user_id]['name'] = data['name']
+    if 'email' in data:
+        users[user_id]['email'] = data['email']
+
+    return jsonify({'message': 'User updated', 'user': users[user_id]})
