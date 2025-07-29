@@ -42,11 +42,8 @@ def patch_user(user_id):
         return jsonify({'error': 'User not found'}), 404
 
     data = request.get_json()
+    if not data:
+        return jsonify({"error": "Invalid input"}), 400
 
-    # Only update fields that are allowed
-    if 'name' in data:
-        users[user_id]['name'] = data['name']
-    if 'email' in data:
-        users[user_id]['email'] = data['email']
-
-    return jsonify({'message': 'User updated', 'user': users[user_id]})
+    users[user_id].update(data)
+    return jsonify({"message": "User updated", "user": users[user_id]}), 200
